@@ -14,6 +14,7 @@ var JWT_KEY = []byte("asdads901023910239asdd")
 
 type JWTClaim struct {
 	Username string
+	Userid   string
 	jwt.RegisteredClaims
 }
 
@@ -22,7 +23,7 @@ type TokenPayload struct {
 	ExpTime time.Time
 }
 
-func (p *TokenPayload) CreateToken(username string, duration int) error {
+func (p *TokenPayload) CreateToken(userid string, username string, duration int) error {
 	var subject string
 	if duration == 30 {
 		subject = "refresh_token"
@@ -33,6 +34,7 @@ func (p *TokenPayload) CreateToken(username string, duration int) error {
 	expTime := time.Now().Add(time.Duration(duration) * time.Minute)
 	claims := JWTClaim{
 		Username: username,
+		Userid:   userid,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "go-jwt-mux",
 			ExpiresAt: jwt.NewNumericDate(expTime),

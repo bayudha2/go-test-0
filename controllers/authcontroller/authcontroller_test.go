@@ -203,7 +203,7 @@ func TestRefreshTokenWithoutBearer(t *testing.T) {
 func TestRefreshFailRandomToken(t *testing.T) {
 	defer clearTable()
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		t.Errorf("can't procced when creating token.")
 	}
 
@@ -229,11 +229,11 @@ func TestRefreshSuccess(t *testing.T) {
 	defer clearTable()
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		t.Errorf("can't procced when creating token.")
 	}
 	var refreshToken config.TokenPayload
-	if err := refreshToken.CreateToken("iniusername0", 30); err != nil {
+	if err := refreshToken.CreateToken("iniuserid0", "iniusername0", 30); err != nil {
 		t.Errorf("can't procced when creating token.")
 	}
 
@@ -259,11 +259,11 @@ func TestLogoutSuccess(t *testing.T) {
 	defer clearTable()
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		t.Errorf("can't procced when creating token.")
 	}
 	var refreshToken config.TokenPayload
-	if err := refreshToken.CreateToken("iniusername0", 30); err != nil {
+	if err := refreshToken.CreateToken("iniuserid0", "iniusername0", 30); err != nil {
 		t.Errorf("can't procced when creating token.")
 	}
 

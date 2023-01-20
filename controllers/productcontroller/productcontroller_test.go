@@ -72,7 +72,7 @@ func TestCreateProductFailPayload(t *testing.T) {
 	}`)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token.")
 	}
 
@@ -103,7 +103,7 @@ func TestCreateProductFailValidation(t *testing.T) {
 	}`)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token.")
 	}
 
@@ -133,7 +133,7 @@ func TestCreateProductSuccess(t *testing.T) {
 	}`)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token.")
 	}
 
@@ -156,7 +156,7 @@ func TestGetSpesificProductNotFound(t *testing.T) {
 	helper.AddProducts(1)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token.")
 	}
 
@@ -180,7 +180,7 @@ func TestGetSpesificProductSuccess(t *testing.T) {
 	productID := helper.AddProducts(1)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token.")
 	}
 
@@ -209,7 +209,7 @@ func TestGetMultipleProduct(t *testing.T) {
 	helper.AddProducts(expectedLength)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token")
 	}
 
@@ -235,7 +235,7 @@ func TestUpdateSpesificProduct(t *testing.T) {
 	productID := helper.AddProducts(1)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token")
 	}
 
@@ -271,7 +271,7 @@ func TestDeleteSpesificProduct(t *testing.T) {
 	productID := helper.AddProducts(1)
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniusername0", 15); err != nil {
+	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
 		log.Fatal("can't procced when creating token")
 	}
 	var access = fmt.Sprintf("Bearer %s", accessToken.Token)

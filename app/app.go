@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/bayudha2/go-test-0/config"
 	"github.com/bayudha2/go-test-0/controllers/authcontroller"
+	"github.com/bayudha2/go-test-0/controllers/postcontroller"
 	"github.com/bayudha2/go-test-0/controllers/productcontroller"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -29,4 +30,6 @@ func InitializeRoutes(R *mux.Router) {
 	secure.HandleFunc("/product/{id}", productcontroller.GetProduct).Methods("GET")
 	secure.HandleFunc("/product/{id}", productcontroller.UpdateProduct).Methods("PUT")
 	secure.HandleFunc("/product/{id}", productcontroller.DeleteProduct).Methods("DELETE")
+
+	secure.HandleFunc("/post", postcontroller.CreatePost).Methods("POST")
 }

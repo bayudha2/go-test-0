@@ -86,13 +86,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken(user.Username, 15); err != nil {
+	if err := accessToken.CreateToken(user.ID, user.Username, 15); err != nil {
 		helper.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	var refreshToken config.TokenPayload
-	if err := refreshToken.CreateToken(user.Username, 30); err != nil {
+	if err := refreshToken.CreateToken(user.ID, user.Username, 30); err != nil {
 		helper.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -149,6 +149,19 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	if ok && token.Valid {
 		refreshUsername, ok := claims["Username"].(string)
 
+		var user models.User
+		user.Username = refreshUsername
+
+		if err := user.GetUser(models.DB); err != nil {
+			if strings.Contains(err.Error(), "no rows") {
+				helper.RespondWithError(w, http.StatusUnauthorized, "Username or password is incorrect")
+				return
+			} else {
+				helper.RespondWithError(w, http.StatusUnauthorized, err.Error())
+				return
+			}
+		}
+
 		if !ok {
 			helper.RespondWithError(w, http.StatusUnprocessableEntity, err.Error())
 			return
@@ -166,13 +179,13 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var accessToken config.TokenPayload
-		if err := accessToken.CreateToken(refreshUsername, 15); err != nil {
+		if err := accessToken.CreateToken(user.ID, refreshUsername, 15); err != nil {
 			helper.RespondWithError(w, http.StatusInternalServerError, err.Error())
 			return
 		}
 
 		var refreshToken config.TokenPayload
-		if err := refreshToken.CreateToken(refreshUsername, 30); err != nil {
+		if err := refreshToken.CreateToken(user.ID, refreshUsername, 30); err != nil {
 			helper.RespondWithError(w, http.StatusInternalServerError, err.Error())
 			return
 		}
