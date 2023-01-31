@@ -56,7 +56,7 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 		by = "name"
 	}
 
-	var params = models.ProductParams{
+	var params = models.Params{
 		Page:   page,
 		Limit:  limit,
 		Order:  order,

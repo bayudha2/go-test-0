@@ -19,10 +19,10 @@ func Initialize() {
 func InitializeRoutes(R *mux.Router) {
 	R.HandleFunc("/signup", authcontroller.Register).Methods("POST")
 	R.HandleFunc("/signin", authcontroller.Login).Methods("POST")
+	R.HandleFunc("/refresh", authcontroller.Refresh).Methods("POST")
 
 	secure := R.PathPrefix("/v1").Subrouter()
 	secure.Use(config.IsAuthorized)
-	secure.HandleFunc("/refresh", authcontroller.Refresh).Methods("POST")
 	secure.HandleFunc("/signout", authcontroller.Logout).Methods("POST")
 
 	secure.HandleFunc("/products", productcontroller.GetProducts).Methods("GET")
@@ -31,5 +31,9 @@ func InitializeRoutes(R *mux.Router) {
 	secure.HandleFunc("/product/{id}", productcontroller.UpdateProduct).Methods("PUT")
 	secure.HandleFunc("/product/{id}", productcontroller.DeleteProduct).Methods("DELETE")
 
+	secure.HandleFunc("/posts", postcontroller.GetPosts).Methods("GET")
 	secure.HandleFunc("/post", postcontroller.CreatePost).Methods("POST")
+	secure.HandleFunc("/post/{id}", postcontroller.GetPost).Methods("GET")
+	secure.HandleFunc("/post/{id}", postcontroller.UpdatePost).Methods("PUT")
+	secure.HandleFunc("/post/{id}", postcontroller.DeletePost).Methods("DELETE")
 }

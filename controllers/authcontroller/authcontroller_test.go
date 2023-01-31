@@ -181,40 +181,14 @@ func TestLoginSuccess(t *testing.T) {
 	}
 }
 
-func TestRefreshTokenWithoutBearer(t *testing.T) {
-	defer clearTable()
-
-	var refresh = fmt.Sprintf(`{"refresh_token": "asdasdadasd"}`)
-	var refreshPayload = []byte(refresh)
-
-	rec := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/v1/refresh", bytes.NewBuffer(refreshPayload))
-	req.Header.Set("Content-Type", "application/json")
-	app.R.ServeHTTP(rec, req)
-
-	var respPayload map[string]string
-	json.Unmarshal(rec.Body.Bytes(), &respPayload)
-
-	if respPayload["error"] != "Not Authorized!" {
-		t.Errorf("Expected the 'error' key of resp to be 'Not Authorized!'. Got %s", respPayload["error"])
-	}
-}
-
 func TestRefreshFailRandomToken(t *testing.T) {
 	defer clearTable()
-	var accessToken config.TokenPayload
-	if err := accessToken.CreateToken("iniuserid0", "iniusername0", 15); err != nil {
-		t.Errorf("can't procced when creating token.")
-	}
-
 	var refresh = fmt.Sprintf(`{"refresh_token": "asdasdadasd"}`)
-	var access = fmt.Sprintf("Bearer %s", accessToken.Token)
 
 	var refreshPayload = []byte(refresh)
 	rec := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/v1/refresh", bytes.NewBuffer(refreshPayload))
+	req, _ := http.NewRequest("POST", "/refresh", bytes.NewBuffer(refreshPayload))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", access)
 	app.R.ServeHTTP(rec, req)
 
 	var respPayload map[string]string
@@ -245,7 +219,7 @@ func TestRefreshSuccess(t *testing.T) {
 
 	var refreshPayload = []byte(refresh)
 	rec := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/v1/refresh", bytes.NewBuffer(refreshPayload))
+	req, _ := http.NewRequest("POST", "/refresh", bytes.NewBuffer(refreshPayload))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("authorization", access)
 	app.R.ServeHTTP(rec, req)

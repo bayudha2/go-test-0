@@ -88,7 +88,7 @@ func IsAuthorized(next http.Handler) http.Handler {
 
 			next.ServeHTTP(w, r)
 		} else {
-			helper.RespondWithError(w, http.StatusUnauthorized, "Token expired")
+			helper.RespondWithError(w, http.StatusUnauthorized, "Token expired!!!")
 			return
 		}
 	})

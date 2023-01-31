@@ -46,6 +46,18 @@ const TableProductIndexingQuery = `
 	CREATE INDEX IF NOT EXISTS name_idx ON "public"."products"("name")
 `
 
+const TablePostCreationQuery = `
+	CREATE TABLE IF NOT EXISTS "public"."posts" (
+		"id" varchar(36) UNIQUE NOT NULL,
+		"user_id" varchar(36) NOT NULL,
+		"description" text NOT NULL,
+		"created_at" timestamptz NOT NULL DEFAULT NOW(),
+		"updated_at" timestamptz NOT NULL DEFAULT NOW(),
+		CONSTRAINT "posts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id"),
+		PRIMARY KEY ("id")
+	);
+`
+
 func AddUsers(count int) {
 	if count < 1 {
 		count = 1
@@ -54,7 +66,7 @@ func AddUsers(count int) {
 	for i := 0; i < count; i++ {
 		hashPassword, _ := bcrypt.GenerateFromPassword([]byte("inipassword"+strconv.Itoa(i)), bcrypt.DefaultCost)
 		models.DB.Exec("INSERT INTO users(id, fullname, username, password, email, created_at) VALUES($1, $2, $3, $4, $5, $6)",
-			uuid.New().String(),
+			"iniuserid"+strconv.Itoa(i),
 			"inifullname"+strconv.Itoa(i),
 			"iniusername"+strconv.Itoa(i),
 			string(hashPassword),
@@ -63,13 +75,22 @@ func AddUsers(count int) {
 	}
 }
 
-func AddSession(refresh string, expires int) {
-	models.DB.Exec("INSERT INTO sessions(id, username, refresh_token, expires_at, created_at) VALUES($1, $2, $3, $4, $5) RETURNING username, refresh_token, expires_at, created_at",
-		uuid.New().String(),
-		"iniusername0",
-		refresh,
-		expires,
-		time.Now())
+func AddPost(count int, userid string) {
+	if count < 1 {
+		count = 1
+	}
+
+	for i := 0; i < count; i++ {
+		models.DB.Exec(`INSERT INTO posts(id, user_id, description, created_at, updated_at) 
+		VALUES($1, $2, $3, $4, $5) 
+		RETURNING id, user_id, description, created_at, updated_at`,
+			"inipostid"+strconv.Itoa(i),
+			userid,
+			"ini post user ini yang ke - "+strconv.Itoa(i),
+			time.Now(),
+			time.Now(),
+		)
+	}
 }
 
 func AddProducts(count int) string {
@@ -89,5 +110,15 @@ func AddProducts(count int) string {
 			time.Now(),
 		)
 	}
+
 	return productID
+}
+
+func AddSession(refresh string, expires int) {
+	models.DB.Exec("INSERT INTO sessions(id, username, refresh_token, expires_at, created_at) VALUES($1, $2, $3, $4, $5) RETURNING username, refresh_token, expires_at, created_at",
+		uuid.New().String(),
+		"iniusername0",
+		refresh,
+		expires,
+		time.Now())
 }

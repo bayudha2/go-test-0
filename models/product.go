@@ -16,7 +16,7 @@ type Product struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type ProductParams struct {
+type Params struct {
 	Page   string
 	Limit  string
 	Order  string
@@ -24,7 +24,7 @@ type ProductParams struct {
 	Search string
 }
 
-type payload struct {
+type payloadProducts struct {
 	Data      []Product `json:"data"`
 	TotalData int       `json:"total_data"`
 }
@@ -74,8 +74,8 @@ func (p *Product) CreateProduct(db *sql.DB) error {
 	return nil
 }
 
-func GetProducts(db *sql.DB, param ProductParams) (payload, error) {
-	var respPayload payload
+func GetProducts(db *sql.DB, param Params) (payloadProducts, error) {
+	var respPayload payloadProducts
 	query := fmt.Sprintf(`
 	SELECT id, name, price, created_at, updated_at
 		FROM products
