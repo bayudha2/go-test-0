@@ -81,7 +81,7 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if listErr, err := validation.ValidateProduct(&p); err != nil {
+	if listErr, err := validation.Validate(&p); err != nil {
 		helper.RespondWithMultiError(w, http.StatusBadRequest, listErr)
 		return
 	}
@@ -112,7 +112,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if listErr, err := validation.ValidateProduct(&p); err != nil {
+	if listErr, err := validation.Validate(&p); err != nil {
 		helper.RespondWithMultiError(w, http.StatusBadRequest, listErr)
 		return
 	}

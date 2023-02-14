@@ -29,7 +29,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if listErr, err := validation.ValidateUser(&userInput); err != nil {
+	if listErr, err := validation.Validate(&userInput); err != nil {
 		helper.RespondWithMultiError(w, http.StatusBadRequest, listErr)
 		return
 	}
@@ -60,7 +60,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if listErr, err := validation.ValidateLogin(&userInput); err != nil {
+	if listErr, err := validation.Validate(&userInput); err != nil {
 		helper.RespondWithMultiError(w, http.StatusBadRequest, listErr)
 		return
 	}

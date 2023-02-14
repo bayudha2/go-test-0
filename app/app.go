@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/bayudha2/go-test-0/config"
 	"github.com/bayudha2/go-test-0/controllers/authcontroller"
+	"github.com/bayudha2/go-test-0/controllers/commentcontroller"
 	"github.com/bayudha2/go-test-0/controllers/postcontroller"
 	"github.com/bayudha2/go-test-0/controllers/productcontroller"
 	"github.com/gorilla/mux"
@@ -36,4 +37,10 @@ func InitializeRoutes(R *mux.Router) {
 	secure.HandleFunc("/post/{id}", postcontroller.GetPost).Methods("GET")
 	secure.HandleFunc("/post/{id}", postcontroller.UpdatePost).Methods("PUT")
 	secure.HandleFunc("/post/{id}", postcontroller.DeletePost).Methods("DELETE")
+
+	secure.HandleFunc("/comment", commentcontroller.CreateComment).Methods("POST")
+	secure.HandleFunc("/comment/{id}", commentcontroller.UpdateComment).Methods("PUT")
+	secure.HandleFunc("/comment/{id}", commentcontroller.DeleteComment).Methods("DELETE")
+	R.HandleFunc("/comments", commentcontroller.GetCommentsByPost).Methods("GET")
+	R.HandleFunc("/comment/{id}", commentcontroller.GetComment).Methods("GET")
 }

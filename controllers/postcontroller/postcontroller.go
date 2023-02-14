@@ -28,7 +28,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if listErr, err := validation.ValidatePost(&postInput); err != nil {
+	if listErr, err := validation.Validate(&postInput); err != nil {
 		helper.RespondWithMultiError(w, http.StatusBadRequest, listErr)
 		return
 	}
@@ -52,6 +52,11 @@ func UpdatePost(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
+	if r.Body == nil {
+		helper.RespondWithError(w, http.StatusBadRequest, "Invalid Request Payload")
+		return
+	}
+
 	if id == "" {
 		helper.RespondWithError(w, http.StatusBadRequest, "Invalid post ID")
 		return
@@ -64,7 +69,7 @@ func UpdatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if listErr, err := validation.ValidatePost(&post); err != nil {
+	if listErr, err := validation.Validate(&post); err != nil {
 		helper.RespondWithMultiError(w, http.StatusBadRequest, listErr)
 		return
 	}
